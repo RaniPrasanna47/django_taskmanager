@@ -1,0 +1,42 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task Manager</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Task Manager</h1>
+        <form method="POST" action="{% url 'add_task' %}">
+            {% csrf_token %}
+            <div class="task-input">
+                <input type="text" id="taskInput" name="title" placeholder="Enter task">
+                <button type="submit" id="addTaskBtn">Add Task</button>
+            </div>
+        </form>
+        <ol id="taskList">
+            {% for task in tasks %}
+            <li class="task-item {% if task.completed %}completed{% endif %}" id="task-{{ task.id }}">
+                <span class="task-text">{{ task.title }}</span>
+                <div class="task-actions">
+                    <button class="edit" onclick="editTask({{ task.id }})">
+                        <i class="fas fa-edit"></i>
+                    </button>
+                    <button class="complete" onclick="completeTask({{ task.id }})">
+                        <i class="fas fa-check"></i>
+                    </button>
+                    <button class="delete" onclick="deleteTask({{ task.id }})">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </div>
+            </li>
+            {% endfor %}
+        </ol>
+    </div>
+    <script src="{% static 'js/scripts.js' %}"></script>
+</body>
+</html>
